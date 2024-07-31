@@ -4,7 +4,7 @@ import { contactsReducer } from "../reducers/contactsReducer";
 import { favoriteReducer } from "../reducers/favoriteReducer";
 import { groupReducer } from "../reducers/groupReducer";
 import { thunk } from "redux-thunk";
-import {} from "redux";
+import { } from "redux";
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -13,9 +13,5 @@ const rootReducer = combineReducers({
   favoriteContacts: favoriteReducer,
   groupContacts: groupReducer,
 });
-export const store = createStore(
-  rootReducer,
-  composeWithDevTools(applyMiddleware(thunk))
-);
-
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 export default store;
