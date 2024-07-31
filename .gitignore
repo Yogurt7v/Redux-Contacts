@@ -8,6 +8,7 @@ node_modules
 .env
 */__data__/*.json
 dist
+*.txt
 
 # testing
 /coverage
