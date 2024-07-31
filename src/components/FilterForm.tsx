@@ -1,8 +1,8 @@
-import {Formik} from 'formik';
-import {Button, Col, Form, InputGroup, Row} from 'react-bootstrap';
-import React, {memo} from 'react';
-import {FormikConfig} from 'formik/dist/types';
-import {GroupContactsDto} from 'src/types/dto/GroupContactsDto';
+import { Formik } from 'formik';
+import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import React, { memo } from 'react';
+import { FormikConfig } from 'formik/dist/types';
+import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 
 export interface FilterFormValues {
   name: string,
@@ -20,8 +20,8 @@ export const FilterForm = memo<FilterFormProps>(({
 }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
-      {({handleChange, handleSubmit}) => (
-        <Form onSubmit={handleSubmit} onChange={handleSubmit}>
+      {({ handleChange, handleSubmit }) => (
+        <Form onSubmit={handleSubmit} onChange={handleChange}>
           <Row xxl={4} className="g-4">
             <Col>
               <InputGroup className="mb-3">
@@ -48,7 +48,8 @@ export const FilterForm = memo<FilterFormProps>(({
               </Form.Select>
             </Col>
             <Col>
-              <Button variant={'primary'} type={'submit'}>Применить</Button>
+              <Button variant={'primary'} type={'submit'} style={{ marginRight: '10px' }} >Применить</Button>
+              <Button variant={'secondary'} type={'reset'} >Очистить</Button>
             </Col>
           </Row>
         </Form>

@@ -9,37 +9,21 @@ import { FavoriteContactsDto } from 'src/types/dto/FavoriteContactsDto';
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 import { DATA_CONTACT, DATA_GROUP_CONTACT } from 'src/__data__';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchContacts, fetchFavoriteContacts, fetchGroupContacts } from 'src/api';
 import { fetchContactsAction, fetchFavoriteContactsAction, fetchGroupContactsAction } from 'src/actions/actions';
+import { Dispatch } from 'redux';
 
 
 export const MainApp = () => {
-  const dispatch = useDispatch();
-  // const contactFromStore = useSelector((state: ContactDto[] | undefined) => state);
-  const contactsState = useState<ContactDto[]>(DATA_CONTACT);
+  const dispatch = useDispatch<Dispatch<any>>();
+  const contactFromStore = useSelector((state: ContactDto[] | []) => state);
+
 
 
   useEffect(() => {
-    fetchContacts().then(contacts => {
-      dispatch(fetchContactsAction(contacts));
-    });
-    fetchFavoriteContacts().then(favorite => {
-      dispatch(fetchFavoriteContactsAction(favorite));
-    })
-
-    fetchGroupContacts().then(group => {
-      dispatch(fetchGroupContactsAction(group));
-    })
-  }, []);
-
-
-  const favoriteContactsState = useState<FavoriteContactsDto>([
-    DATA_CONTACT[0].id,
-    DATA_CONTACT[1].id,
-    DATA_CONTACT[2].id,
-    DATA_CONTACT[3].id
-  ]);
-  const groupContactsState = useState<GroupContactsDto[]>(DATA_GROUP_CONTACT);
+    dispatch(fetchContactsAction());
+    dispatch(fetchFavoriteContactsAction())
+    dispatch(fetchGroupContactsAction())
+  }, [dispatch]);
 
   return (
     <ThemeProvider
@@ -50,50 +34,26 @@ export const MainApp = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={
-              <ContactListPage
-                contactsState={contactsState}
-                favoriteContactsState={favoriteContactsState}
-                groupContactsState={groupContactsState}
-              />
+              <ContactListPage />
             } />
             <Route path="contact">
               <Route index element={
-                <ContactListPage
-                  contactsState={contactsState}
-                  favoriteContactsState={favoriteContactsState}
-                  groupContactsState={groupContactsState}
-                />
+                <ContactListPage />
               } />
               <Route path=":contactId" element={
-                <ContactPage
-                  contactsState={contactsState}
-                  favoriteContactsState={favoriteContactsState}
-                  groupContactsState={groupContactsState}
-                />
+                <ContactPage />
               } />
             </Route>
             <Route path="groups">
               <Route index element={
-                <GroupListPage
-                  contactsState={contactsState}
-                  favoriteContactsState={favoriteContactsState}
-                  groupContactsState={groupContactsState}
-                />
+                <GroupListPage />
               } />
               <Route path=":groupId" element={
-                <GroupPage
-                  contactsState={contactsState}
-                  favoriteContactsState={favoriteContactsState}
-                  groupContactsState={groupContactsState}
-                />
+                <GroupPage />
               } />
             </Route>
             <Route path="favorit" element={
-              <FavoritListPage
-                contactsState={contactsState}
-                favoriteContactsState={favoriteContactsState}
-                groupContactsState={groupContactsState}
-              />
+              <FavoritListPage />
             } />
           </Route>
         </Routes>
