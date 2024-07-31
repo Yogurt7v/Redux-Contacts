@@ -16,12 +16,13 @@ interface FilterFormProps extends FormikConfig<Partial<FilterFormValues>> {
 export const FilterForm = memo<FilterFormProps>(({
   onSubmit,
   initialValues = {},
-  groupContactsList
+  groupContactsList,
 }) => {
+
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({ handleChange, handleSubmit }) => (
-        <Form onSubmit={handleSubmit} onChange={handleChange}>
+        <Form onSubmit={handleSubmit} onChange={handleChange} >
           <Row xxl={4} className="g-4">
             <Col>
               <InputGroup className="mb-3">
@@ -49,7 +50,6 @@ export const FilterForm = memo<FilterFormProps>(({
             </Col>
             <Col>
               <Button variant={'primary'} type={'submit'} style={{ marginRight: '10px' }} >Применить</Button>
-              <Button variant={'secondary'} type={'reset'} >Очистить</Button>
             </Col>
           </Row>
         </Form>

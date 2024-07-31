@@ -12,9 +12,7 @@ export const ContactListPage = () => {
   const groupContactsState = useSelector((state: RootState) => state.groupContacts);
   const [contacts, setContacts] = useState<ContactDto[]>(contactFromStore)
 
-  useEffect(() => {
-    setContacts(contactFromStore)
-  }, [contactFromStore])
+
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
     let findContacts: ContactDto[] = contactFromStore;
@@ -37,6 +35,10 @@ export const ContactListPage = () => {
     }
     setContacts(findContacts)
   }
+
+  useEffect(() => {
+    setContacts(contactFromStore)
+  }, [contactFromStore])
 
   return (
     <Row xxl={1}>
