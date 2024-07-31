@@ -6,13 +6,13 @@ import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
 import { Empty } from 'src/components/Empty';
 import { ContactCard } from 'src/components/ContactCard';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'src/hooks/hooks';
 import { RootState } from 'src/store/store';
 
 export const GroupPage = memo(() => {
 
-  const contactFromStore = useSelector((state: RootState) => state.contacts);
-  const groupContactsState = useSelector((state: RootState) => state.groupContacts);
+  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
+  const groupContactsState = useAppSelector((state: RootState) => state.groupContacts);
 
   const { groupId } = useParams<{ groupId: string }>();
   const [contacts, setContacts] = useState<ContactDto[]>([]);

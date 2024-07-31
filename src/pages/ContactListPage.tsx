@@ -3,13 +3,13 @@ import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { FilterForm, FilterFormValues } from 'src/components/FilterForm';
 import { ContactDto } from 'src/types/dto/ContactDto';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'src/hooks/hooks';
 import { RootState } from 'src/store/store';
 
 
 export const ContactListPage = () => {
-  const contactFromStore = useSelector((state: RootState) => state.contacts);
-  const groupContactsState = useSelector((state: RootState) => state.groupContacts);
+  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
+  const groupContactsState = useAppSelector((state: RootState) => state.groupContacts);
   const [contacts, setContacts] = useState<ContactDto[]>(contactFromStore)
 
 

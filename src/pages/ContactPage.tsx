@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom';
 import { ContactDto } from 'src/types/dto/ContactDto';
 import { ContactCard } from 'src/components/ContactCard';
 import { Empty } from 'src/components/Empty';
-import { useSelector } from 'react-redux';
 import { RootState } from 'src/store/store';
+import { useAppSelector } from 'src/hooks/hooks';
 
 
 export const ContactPage = memo(() => {
-  const contactFromStore = useSelector((state: RootState) => state.contacts);
+  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
   const contactsState = useState<ContactDto[]>(contactFromStore)
   const { contactId } = useParams<{ contactId: string }>();
   const [contact, setContact] = useState<ContactDto>();
