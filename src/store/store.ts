@@ -14,6 +14,5 @@ const rootReducer = combineReducers({
   groupContacts: groupReducer,
 });
 
-// @ts-ignore
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, undefined, composeWithDevTools(applyMiddleware(thunk)));
 export default store;

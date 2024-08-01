@@ -3,7 +3,7 @@ import { FETCH_CONTACTS } from "../actions/actions";
 import { ProjectActions } from "../actions/actions";
 
 
-const initialState: ContactDto[] = []
+const initialState: ContactDto[] | [] = []
 
 export const contactsReducer = (state: ContactDto[] = initialState, action: ProjectActions) => {
     switch (action.type) {
