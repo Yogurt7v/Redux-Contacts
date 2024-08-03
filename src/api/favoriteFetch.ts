@@ -1,6 +1,5 @@
 import { FavoriteContactsDto } from "../types/dto/FavoriteContactsDto";
-
 export async function fetchFavoriteContacts(): Promise<FavoriteContactsDto> {
-    let res = await fetch("http://localhost:3000/data_contacts").then(response => response.json())
-    return [res[0].id, res[1].id, res[2].id, res[3].id]
+    const result = await fetch("http://localhost:3003/data_contacts").then(response => response.json())
+    return [result[0].id, result[1].id, result[2].id, result[3].id]
 }

@@ -7,5 +7,6 @@ npm i
 ## Запуск приложения
 
 ```bash
-npm start
+npm run server
+npm run start
 ```
