@@ -1,11 +1,7 @@
-import { DATA_CONTACT } from "../__data__";
 import { ContactDto } from "../types/dto/ContactDto";
 
-
 export async function fetchContacts(): Promise<ContactDto[]> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(DATA_CONTACT);
-        }, 1500);
-    });
+    return await fetch("http://localhost:3000/data_contacts").then((response) => {
+        return response.json();
+    })
 }

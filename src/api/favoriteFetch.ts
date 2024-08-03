@@ -1,11 +1,6 @@
-import { DATA_CONTACT } from "../__data__";
 import { FavoriteContactsDto } from "../types/dto/FavoriteContactsDto";
 
-
 export async function fetchFavoriteContacts(): Promise<FavoriteContactsDto> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve([DATA_CONTACT[0].id, DATA_CONTACT[1].id, DATA_CONTACT[2].id, DATA_CONTACT[3].id])
-        }, 1200);
-    })
+    let res = await fetch("http://localhost:3000/data_contacts").then(response => response.json())
+    return [res[0].id, res[1].id, res[2].id, res[3].id]
 }
