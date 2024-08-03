@@ -1,18 +1,22 @@
-import { createStore, applyMiddleware, combineReducers } from "redux";
-import { composeWithDevTools } from "@redux-devtools/extension";
-import { contactsReducer } from "../reducers/contactsReducer";
-import { favoriteReducer } from "../reducers/favoriteReducer";
-import { groupReducer } from "../reducers/groupReducer";
-import { thunk } from "redux-thunk";
-import { } from "redux";
+import { combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { contactsSlice } from "../reducers/contactsReducer";
+import { groupSlice } from "../reducers/groupReducer";
+import { favContactsSlice } from "../reducers/favoriteReducer";
 
-export type RootState = ReturnType<typeof rootReducer>;
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 const rootReducer = combineReducers({
-  contacts: contactsReducer,
-  favoriteContacts: favoriteReducer,
-  groupContacts: groupReducer,
+  contacts: contactsSlice.reducer,
+  favoriteContacts: favContactsSlice.reducer,
+  groupContacts: groupSlice.reducer,
 });
 
-export const store = createStore(rootReducer, undefined, composeWithDevTools(applyMiddleware(thunk)));
+export const store = configureStore({
+  reducer: rootReducer,
+  devTools: true,
+})
+
+
 export default store;
