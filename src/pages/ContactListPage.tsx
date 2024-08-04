@@ -3,32 +3,30 @@ import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { FilterForm, FilterFormValues } from 'src/components/FilterForm';
 import { ContactDto } from 'src/types/dto/ContactDto';
-import { useAppSelector } from 'src/hooks/hooks';
-import { RootState } from 'src/store/store';
+import { useGetContactsQuery } from 'src/reducers/contactsReducer';
+import { useGetGroupContactsQuery } from 'src/reducers/groupReducer';
 
 
 export const ContactListPage = () => {
-  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
-  const groupContactsState = useAppSelector((state: RootState) => state.groupContacts);
-  const [contacts, setContacts] = useState<ContactDto[]>(contactFromStore)
-
-
+  const { data: contatsApi, isLoading } = useGetContactsQuery()
+  const { data: groupContactsState } = useGetGroupContactsQuery()
+  const [contacts, setContacts] = useState<ContactDto[] | undefined>(contatsApi)
 
   const onSubmit = (fv: Partial<FilterFormValues>) => {
-    let findContacts: ContactDto[] = contactFromStore;
+    let findContacts: ContactDto[] | undefined = contatsApi;
 
     if (fv.name) {
       const fvName = fv.name.toLowerCase();
-      findContacts = findContacts.filter(({ name }) => (
+      findContacts = findContacts?.filter(({ name }) => (
         name.toLowerCase().indexOf(fvName) > -1
       ))
     }
 
     if (fv.groupId) {
-      const groupContacts = groupContactsState.find(({ id }) => id === fv.groupId);
+      const groupContacts = groupContactsState?.find(({ id }) => id === fv.groupId);
 
       if (groupContacts) {
-        findContacts = findContacts.filter(({ id }) => (
+        findContacts = findContacts?.filter(({ id }) => (
           groupContacts.contactIds.includes(id)
         ))
       }
@@ -37,8 +35,8 @@ export const ContactListPage = () => {
   }
 
   useEffect(() => {
-    setContacts(contactFromStore)
-  }, [contactFromStore])
+    setContacts(contatsApi)
+  }, [contatsApi])
 
   return (
     <Row xxl={1}>
@@ -47,8 +45,8 @@ export const ContactListPage = () => {
       </Col>
       <Col>
         <Row xxl={4} className="g-4">
-          {(contacts.length === 0) ? <p>Loading ...</p> :
-            (contacts.map((contact) => (
+          {isLoading ? <p>Loading ...</p> :
+            (contacts?.map((contact) => (
               <Col key={contact.id}>
                 <ContactCard contact={contact} withLink />
               </Col>

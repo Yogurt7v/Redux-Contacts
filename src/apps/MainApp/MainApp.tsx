@@ -5,9 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from 'src/components/Layout';
 import { ContactListPage, GroupPage, ContactPage, FavoritListPage, GroupListPage } from 'src/pages';
 import { useDispatch } from 'react-redux';
-import { getContactsAsync } from '../../../src/reducers/contactsReducer';
 import { AppDispatch } from 'src/store/store';
-import { getGroupContactsAsync } from 'src/reducers/groupReducer';
+// import { getGroupContactsAsync } from 'src/reducers/groupReducer';
 import { getFavoriteContactsAsync } from 'src/reducers/favoriteReducer';
 
 
@@ -15,8 +14,7 @@ export const MainApp = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(getContactsAsync())
-    dispatch(getGroupContactsAsync())
+    // dispatch(getGroupContactsAsync())
     dispatch(getFavoriteContactsAsync())
   }, [dispatch]);
 
