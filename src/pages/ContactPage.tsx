@@ -1,15 +1,14 @@
-import React, { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { ContactDto } from 'src/types/dto/ContactDto';
 import { ContactCard } from 'src/components/ContactCard';
 import { Empty } from 'src/components/Empty';
-import { useGetContactsQuery } from 'src/reducers/contactsReducer';
+import { ContactsStore } from 'src/store/contactsStore';
 
 
 export const ContactPage = memo(() => {
-  const { data } = useGetContactsQuery();
-  const contactsState = useState<ContactDto[] | undefined>(data)
+  const contactsState = useState<ContactDto[] | undefined>(ContactsStore.contacts)
   const { contactId } = useParams<{ contactId: string }>();
   const [contact, setContact] = useState<ContactDto>();
 

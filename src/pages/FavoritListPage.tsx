@@ -1,21 +1,31 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ContactCard } from 'src/components/ContactCard';
 import { ContactDto } from 'src/types/dto/ContactDto';
-import { useAppSelector } from 'src/hooks/hooks';
-import { RootState } from 'src/store/store';
-import { useGetContactsQuery } from 'src/reducers/contactsReducer';
+import { ContactsStore } from 'src/store/contactsStore';
+import { FavoriteContactsStore } from 'src/store/favoriteStore';
+import { observer } from 'mobx-react-lite';
 
-export const FavoritListPage = memo(() => {
 
-  const { data: contactFromStore } = useGetContactsQuery();
-  const favoriteContactsFromStore = useAppSelector((state: RootState) => state.favoriteContacts);
-  const [contacts, setContacts] = useState<ContactDto[] | undefined>([])
+export const FavoritListPage = observer(() => {
+
+  const [contacts, setContacts] = useState<ContactDto[] | []>([])
 
   useEffect(() => {
-    let res = contactFromStore?.filter((contact) => favoriteContactsFromStore.includes(contact.id));
+
+    let res: ContactDto[] = []
+
+    FavoriteContactsStore.favoriteContacts.forEach((id: any) => {
+      ContactsStore.contacts.forEach((contact: ContactDto) => {
+        if (contact.id === id) {
+          res.push(contact)
+        }
+      })
+    })
+
     setContacts(res);
-  }, [contactFromStore, favoriteContactsFromStore])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ContactsStore.contacts, FavoriteContactsStore.favoriteContacts])
 
   return (
     <Row xxl={4} className="g-4">

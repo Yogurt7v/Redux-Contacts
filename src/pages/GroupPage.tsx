@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { ContactDto } from 'src/types/dto/ContactDto';
@@ -6,23 +6,22 @@ import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
 import { Empty } from 'src/components/Empty';
 import { ContactCard } from 'src/components/ContactCard';
-import { useGetContactsQuery } from 'src/reducers/contactsReducer';
-import { useGetGroupContactsQuery } from 'src/reducers/groupReducer';
+import { observer } from 'mobx-react-lite';
+import { ContactsStore } from 'src/store/contactsStore';
+import { GroupsStore } from 'src/store/groupStore';
 
-export const GroupPage = memo(() => {
-  const { data: contactFromStore } = useGetContactsQuery()
-  const { data: groupContactsState } = useGetGroupContactsQuery()
+export const GroupPage = observer(() => {
 
   const { groupId } = useParams<{ groupId: string }>();
   const [contacts, setContacts] = useState<ContactDto[] | undefined>([]);
   const [groupContacts, setGroupContacts] = useState<GroupContactsDto>();
 
   useEffect(() => {
-    const findGroup = groupContactsState?.find(({ id }) => id === groupId);
+    const findGroup = GroupsStore.groups.find(({ id }) => id === groupId);
     setGroupContacts(findGroup);
     setContacts(() => {
       if (findGroup) {
-        return contactFromStore?.filter(({ id }) => findGroup.contactIds.includes(id))
+        return ContactsStore.contacts.filter(({ id }) => findGroup.contactIds.includes(id))
       }
       return [];
     });

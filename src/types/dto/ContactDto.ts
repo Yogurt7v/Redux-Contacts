@@ -1,5 +1,5 @@
 export interface ContactDto {
-  id: string;
+  id: string | never;
   /** телефон */
   phone: string
   /** имя */
