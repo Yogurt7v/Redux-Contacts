@@ -4,19 +4,21 @@ import { ThemeProvider } from 'react-bootstrap';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout } from 'src/components/Layout';
 import { ContactListPage, GroupPage, ContactPage, FavoritListPage, GroupListPage } from 'src/pages';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from 'src/store/store';
-// import { getGroupContactsAsync } from 'src/reducers/groupReducer';
-import { getFavoriteContactsAsync } from 'src/reducers/favoriteReducer';
+import { ContactsStore } from 'src/store/contactsStore';
+import { observer } from 'mobx-react-lite';
+import { GroupsStore } from 'src/store/groupStore';
+import { FavoriteContactsStore } from 'src/store/favoriteStore';
 
 
-export const MainApp = () => {
-  const dispatch = useDispatch<AppDispatch>();
+export const MainApp = observer(() => {
 
   useEffect(() => {
-    // dispatch(getGroupContactsAsync())
-    dispatch(getFavoriteContactsAsync())
-  }, [dispatch]);
+    ContactsStore.getContacts()
+    GroupsStore.getGroups()
+    FavoriteContactsStore.getFavorite()
+  }, []);
+
+
 
   return (
     <ThemeProvider
@@ -53,4 +55,4 @@ export const MainApp = () => {
       </BrowserRouter>
     </ThemeProvider>
   );
-};
+});
