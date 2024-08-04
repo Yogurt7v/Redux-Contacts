@@ -4,18 +4,18 @@ import { useParams } from 'react-router-dom';
 import { ContactDto } from 'src/types/dto/ContactDto';
 import { ContactCard } from 'src/components/ContactCard';
 import { Empty } from 'src/components/Empty';
-import { RootState } from 'src/store/store';
-import { useAppSelector } from 'src/hooks/hooks';
+import { useGetContactsQuery } from 'src/reducers/contactsReducer';
 
 
 export const ContactPage = memo(() => {
-  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
-  const contactsState = useState<ContactDto[]>(contactFromStore)
+  const { data } = useGetContactsQuery();
+  const contactsState = useState<ContactDto[] | undefined>(data)
   const { contactId } = useParams<{ contactId: string }>();
   const [contact, setContact] = useState<ContactDto>();
 
   useEffect(() => {
-    setContact(() => contactsState[0].find(({ id }) => id === contactId));
+    setContact(() => contactsState[0]?.find(({ id }) => id === contactId));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contactId]);
 
   return (

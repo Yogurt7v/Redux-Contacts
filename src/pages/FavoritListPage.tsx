@@ -4,22 +4,22 @@ import { ContactCard } from 'src/components/ContactCard';
 import { ContactDto } from 'src/types/dto/ContactDto';
 import { useAppSelector } from 'src/hooks/hooks';
 import { RootState } from 'src/store/store';
+import { useGetContactsQuery } from 'src/reducers/contactsReducer';
 
 export const FavoritListPage = memo(() => {
 
-  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
+  const { data: contactFromStore } = useGetContactsQuery();
   const favoriteContactsFromStore = useAppSelector((state: RootState) => state.favoriteContacts);
-  const [contacts, setContacts] = useState<ContactDto[]>([])
+  const [contacts, setContacts] = useState<ContactDto[] | undefined>([])
 
   useEffect(() => {
-    let res = contactFromStore.filter((contact) => favoriteContactsFromStore.includes(contact.id));
+    let res = contactFromStore?.filter((contact) => favoriteContactsFromStore.includes(contact.id));
     setContacts(res);
   }, [contactFromStore, favoriteContactsFromStore])
 
-
   return (
     <Row xxl={4} className="g-4">
-      {contacts.map((contact) => (
+      {contacts?.map((contact) => (
         <Col key={contact.id}>
           <ContactCard contact={contact} withLink />
         </Col>

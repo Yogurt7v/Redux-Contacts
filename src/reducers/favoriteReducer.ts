@@ -1,14 +1,25 @@
 import { FavoriteContactsDto } from "../types/dto/FavoriteContactsDto";
-import { FETCH_FAVORITE_CONTACTS } from "../actions/actions";
-import { ProjectActions } from "../actions/actions";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchFavoriteContacts } from "src/api";
+import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: FavoriteContactsDto = []
 
-export const favoriteReducer = (state: FavoriteContactsDto = initialState, action: ProjectActions) => {
-    switch (action.type) {
-        case FETCH_FAVORITE_CONTACTS:
-            return [...action.payload]
-        default:
-            return state
+export const getFavoriteContactsAsync = createAsyncThunk('favorite/getFavoriteContactsAsync', async () => {
+    const favContacts = await fetchFavoriteContacts()
+    return favContacts
+})
+
+export const favContactsSlice = createSlice({
+    name: 'favContacts',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+        builder.addCase(getFavoriteContactsAsync.fulfilled,
+            (state: FavoriteContactsDto, action: PayloadAction<FavoriteContactsDto>): FavoriteContactsDto => {
+                return [...action.payload]
+            }
+        );
     }
-}
+})

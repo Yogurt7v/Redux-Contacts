@@ -6,24 +6,23 @@ import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
 import { GroupContactsCard } from 'src/components/GroupContactsCard';
 import { Empty } from 'src/components/Empty';
 import { ContactCard } from 'src/components/ContactCard';
-import { useAppSelector } from 'src/hooks/hooks';
-import { RootState } from 'src/store/store';
+import { useGetContactsQuery } from 'src/reducers/contactsReducer';
+import { useGetGroupContactsQuery } from 'src/reducers/groupReducer';
 
 export const GroupPage = memo(() => {
-
-  const contactFromStore = useAppSelector((state: RootState) => state.contacts);
-  const groupContactsState = useAppSelector((state: RootState) => state.groupContacts);
+  const { data: contactFromStore } = useGetContactsQuery()
+  const { data: groupContactsState } = useGetGroupContactsQuery()
 
   const { groupId } = useParams<{ groupId: string }>();
-  const [contacts, setContacts] = useState<ContactDto[]>([]);
+  const [contacts, setContacts] = useState<ContactDto[] | undefined>([]);
   const [groupContacts, setGroupContacts] = useState<GroupContactsDto>();
 
   useEffect(() => {
-    const findGroup = groupContactsState.find(({ id }) => id === groupId);
+    const findGroup = groupContactsState?.find(({ id }) => id === groupId);
     setGroupContacts(findGroup);
     setContacts(() => {
       if (findGroup) {
-        return contactFromStore.filter(({ id }) => findGroup.contactIds.includes(id))
+        return contactFromStore?.filter(({ id }) => findGroup.contactIds.includes(id))
       }
       return [];
     });
@@ -43,7 +42,7 @@ export const GroupPage = memo(() => {
           </Col>
           <Col>
             <Row xxl={4} className="g-4">
-              {contacts.map((contact) => (
+              {contacts?.map((contact) => (
                 <Col key={contact.id}>
                   <ContactCard contact={contact} withLink />
                 </Col>
